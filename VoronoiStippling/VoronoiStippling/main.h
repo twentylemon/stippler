@@ -1,7 +1,7 @@
 
+#include <vector>
 #include <fstream>
 #include <iostream>
 
-
-#include "stippler\Stipple.h"
-
+#include <util/Random.h>
+#include <stippler/Stippler.h>

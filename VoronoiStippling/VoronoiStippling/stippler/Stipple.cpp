@@ -11,7 +11,8 @@ Stipple::Stipple(double x, double y, double radius, double grey) :
     x(x),
     y(y),
     radius(radius),
-    red(grey), green(grey), blue(grey) {
+    red(grey), green(grey), blue(grey)
+{
 }
 
 
@@ -24,41 +25,89 @@ Stipple::Stipple(double x, double y, double radius, double red, double green, do
     x(x),
     y(y),
     radius(radius),
-    red(red), green(green), blue(blue) {
+    red(red), green(green), blue(blue)
+{
 }
 
 // returns the x position of the stipple
-double Stipple::getX() {
+double Stipple::getX() const {
     return x;
 }
 
 // returns the y position of the stipple
-double Stipple::getY() {
+double Stipple::getY() const {
     return y;
 }
 
 // returns the radius of the stipple
-double Stipple::getRadius() {
+double Stipple::getRadius() const {
     return radius;
 }
 
 // returns the red channel value of the stipple
-double Stipple::getRed() {
+double Stipple::getRed() const {
     return red;
 }
 
 // returns the green channel value of the stipple
-double Stipple::getGreen() {
+double Stipple::getGreen() const {
     return green;
 }
 
 // returns the blue channel value of the stipple
-double Stipple::getBlue() {
+double Stipple::getBlue() const {
     return blue;
 }
 
 // returns the greyscale colour of this stipple
-double Stipple::getGrey() {
+double Stipple::getGrey() const {
     return (getRed() + getGreen() + getBlue()) / 3.0;
 }
 
+// sets the new x position of this stipple
+void Stipple::setX(double x) {
+    this->x = x;
+}
+
+// sets the new y position of this stipple
+void Stipple::setY(double y) {
+    this->y = y;
+}
+
+// sets the new radius of this stipple
+void Stipple::setRadius(double radius) {
+    this->radius = radius;
+}
+
+// sets the new red channel value of this stipple
+void Stipple::setRed(double red) {
+    this->red = red;
+}
+
+// sets the new green channel value of this stipple
+void Stipple::setGreen(double green) {
+    this->green = green;
+}
+
+// sets the new blue channel value of this stipple
+void Stipple::setBlue(double blue) {
+    this->blue = blue;
+}
+
+// sets the new greyscale colour of this stipple
+void Stipple::setGrey(double grey) {
+    setRed(grey);
+    setGreen(grey);
+    setBlue(grey);
+}
+
+// overriding `<<` for stipples, will be used to write svg files
+std::ostream& operator<<(std::ostream& out, const Stipple& stipple) {
+    out << "<circle"
+        << " cx=\"" << stipple.getX() << "\""
+        << " cy=\"" << stipple.getY() << "\""
+        << " r=\"" << stipple.getRadius() << "\""
+        << " fill=\"rgb(" << (unsigned int)(255 * stipple.getRed()) << "," << (unsigned int)(255 * stipple.getGreen()) << "," << (unsigned int)(255 * stipple.getBlue()) << ")\""
+        << "/>";
+    return out;
+}

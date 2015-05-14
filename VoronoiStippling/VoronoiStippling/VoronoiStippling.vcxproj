@@ -13,10 +13,18 @@
   <ItemGroup>
     <ClInclude Include="main.h" />
     <ClInclude Include="stippler\Stipple.h" />
+    <ClInclude Include="stippler\Stippler.h" />
+    <ClInclude Include="stippler\VoronoiDiagramGenerator.h" />
+    <ClInclude Include="util\Random.h" />
+    <ClInclude Include="voronoi\Voronoi.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stippler\Stipple.cpp" />
+    <ClCompile Include="stippler\Stippler.cpp" />
+    <ClCompile Include="stippler\VoronoiDiagramGenerator.cpp" />
+    <ClCompile Include="util\Random.cpp" />
+    <ClCompile Include="voronoi\Voronoi.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8FCE1105-7B9E-4588-9E6C-ED3750161CAC}</ProjectGuid>
@@ -46,7 +54,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

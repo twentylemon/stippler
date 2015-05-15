@@ -3,11 +3,9 @@
 #include "Voronoi.h"
 
 
-Voronoi::Voronoi(void)
-{
+Voronoi::Voronoi() {
 }
 
 
-Voronoi::~Voronoi(void)
-{
+void Voronoi::calculateDiagram(const Stippler& stippler) {
 }

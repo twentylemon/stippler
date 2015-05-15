@@ -2,6 +2,12 @@
 
 #include "Stippler.h"
 
+Stippler::Stippler() :
+    width(0),
+    height(0)
+{
+}
+
 // initializes the stippler
 Stippler::Stippler(int width, int height, int numStipples) : 
     width(width),

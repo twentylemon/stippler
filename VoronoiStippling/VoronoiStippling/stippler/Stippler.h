@@ -14,10 +14,14 @@
 #include "VoronoiDiagramGenerator.h"
 #include <util/Random.h>
 
+#include <voronoi/Voronoi.h>
+class Voronoi;
+
 // class to do weighted voronoi stippling
 class Stippler
 {
 public:
+    Stippler();
     Stippler(int width, int height, int numStipples);
 
     int getWidth() const;

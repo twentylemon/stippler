@@ -1,19 +1,16 @@
 
 
 #pragma once
+#include <GL/glut.h>
 
+#include <stippler/Stippler.h>
+class Stippler;
 
 class Voronoi
 {
 public:
-    Voronoi(void);
-    ~Voronoi(void);
+    Voronoi();
 
 
-
-
-private:
-    typedef struct {
-        int x;
-    } Site;
+    void calculateDiagram(const Stippler& stippler);
 };

@@ -54,7 +54,7 @@ void Stippler::initStipples(int numStipples) {
 // performs one iteration of lloyds method on the stipples
 // calculates the voronoi diagram, moves stipples to centroids
 // returns the <total,max> movement of the stipples as a pair
-std::pair<double,double> Stippler::lloydsMethod() {
+std::pair<float,float> Stippler::lloydsMethod() {
     VoronoiDiagramGenerator gen;
     gen.generateVoronoi(xValues.data(), yValues.data(), xValues.size(), 0.0f, getWidth()-1.0f, 0.0f, getHeight()-1.0f);
 
@@ -75,11 +75,11 @@ std::pair<double,double> Stippler::lloydsMethod() {
         edgeMap[p2].push_back(edge);
     }
 
-    std::atomic<double> max, avg;
+    std::atomic<float> max, avg;
     concurrency::parallel_for_each(edgeMap.begin(), edgeMap.end(), [this](std::pair<Point,std::vector<Edge>> item){
         // calculate centroid
     });
-    return std::make_pair(0.0, 0.0);
+    return std::make_pair(0.0f, 0.0f);
 }
 
 

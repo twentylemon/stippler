@@ -5,30 +5,32 @@ Voronoi vor;
 Stippler stippler;
 
 void displayFunc() {
+    /*
     std::vector<Stipple> stipples = stippler.getStipples();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLdouble radius = 200.0, height = 25.0;
+    GLfloat radius = 200.0f, height = 25.0f;
     GLint stacks = 10, slices = 40;
 
     glPushMatrix();
     glColor3f(1, 0, 0);
-    glTranslated(stipples[0].getX(), stipples[0].getY(), 0);
+    glTranslatef(stipples[0].getX(), stipples[0].getY(), 0);
     glutSolidCone(radius, height, slices, stacks);
     glPopMatrix();
     
 
     glPushMatrix();
     glColor3f(0,10, 0);
-    glTranslated(stipples[1].getX(), stipples[1].getY(), 0);
+    glTranslatef(stipples[1].getX(), stipples[1].getY(), 0);
     glutSolidCone(radius, height, slices, stacks);
     glPopMatrix();
 
     glPushMatrix();
     glColor3f(0, 0, 1);
-    glTranslated(stipples[2].getX(), stipples[2].getY(), 0);
+    glTranslatef(stipples[2].getX(), stipples[2].getY(), 0);
     glutSolidCone(radius, height, slices, stacks);
     glPopMatrix();
-
+    */
+    vor.calculateDiagram(stippler);
     glFlush();
 }
 
@@ -51,7 +53,7 @@ int main(int argc, char** argv) {
     glOrtho(0, 200, 200, 0, -100, 100);
 
     glutDisplayFunc(displayFunc);
-    glutIdleFunc(displayFunc);
+    //glutIdleFunc(displayFunc);
     glutMainLoop();
     //system("pause");
     return 0;

@@ -7,7 +7,7 @@
 // y: the y position of the stipple
 // radius: the size of the stipple
 // grey: the greyscale colour of the stipple, in [0..1] where 1 is white
-Stipple::Stipple(double x, double y, double radius, double grey) :
+Stipple::Stipple(float x, float y, float radius, float grey) :
     x(x),
     y(y),
     radius(radius),
@@ -21,7 +21,7 @@ Stipple::Stipple(double x, double y, double radius, double grey) :
 // y: the y position of the stipple
 // radius: the size of the stipple
 // r,g,b: red/green/blue colours of the stipple, each in [0..1]
-Stipple::Stipple(double x, double y, double radius, double red, double green, double blue) :
+Stipple::Stipple(float x, float y, float radius, float red, float green, float blue) :
     x(x),
     y(y),
     radius(radius),
@@ -30,72 +30,72 @@ Stipple::Stipple(double x, double y, double radius, double red, double green, do
 }
 
 // returns the x position of the stipple
-double Stipple::getX() const {
+float Stipple::getX() const {
     return x;
 }
 
 // returns the y position of the stipple
-double Stipple::getY() const {
+float Stipple::getY() const {
     return y;
 }
 
 // returns the radius of the stipple
-double Stipple::getRadius() const {
+float Stipple::getRadius() const {
     return radius;
 }
 
 // returns the red channel value of the stipple
-double Stipple::getRed() const {
+float Stipple::getRed() const {
     return red;
 }
 
 // returns the green channel value of the stipple
-double Stipple::getGreen() const {
+float Stipple::getGreen() const {
     return green;
 }
 
 // returns the blue channel value of the stipple
-double Stipple::getBlue() const {
+float Stipple::getBlue() const {
     return blue;
 }
 
 // returns the greyscale colour of this stipple
-double Stipple::getGrey() const {
+float Stipple::getGrey() const {
     return (getRed() + getGreen() + getBlue()) / 3.0;
 }
 
 // sets the new x position of this stipple
-void Stipple::setX(double x) {
+void Stipple::setX(float x) {
     this->x = x;
 }
 
 // sets the new y position of this stipple
-void Stipple::setY(double y) {
+void Stipple::setY(float y) {
     this->y = y;
 }
 
 // sets the new radius of this stipple
-void Stipple::setRadius(double radius) {
+void Stipple::setRadius(float radius) {
     this->radius = radius;
 }
 
 // sets the new red channel value of this stipple
-void Stipple::setRed(double red) {
+void Stipple::setRed(float red) {
     this->red = red;
 }
 
 // sets the new green channel value of this stipple
-void Stipple::setGreen(double green) {
+void Stipple::setGreen(float green) {
     this->green = green;
 }
 
 // sets the new blue channel value of this stipple
-void Stipple::setBlue(double blue) {
+void Stipple::setBlue(float blue) {
     this->blue = blue;
 }
 
 // sets the new greyscale colour of this stipple
-void Stipple::setGrey(double grey) {
+void Stipple::setGrey(float grey) {
     setRed(grey);
     setGreen(grey);
     setBlue(grey);

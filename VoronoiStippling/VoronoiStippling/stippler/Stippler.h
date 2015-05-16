@@ -31,7 +31,7 @@ public:
     void setWidth(int width);
     void setHeight(int height);
 
-    std::pair<double,double> lloydsMethod();
+    std::pair<float,float> lloydsMethod();
 
     friend std::ostream& operator<<(std::ostream& out, const Stippler& stippler);
 

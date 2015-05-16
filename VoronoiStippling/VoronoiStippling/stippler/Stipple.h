@@ -10,31 +10,31 @@
 class Stipple
 {
 public:
-    Stipple(double x, double y, double radius, double grey);
-    Stipple(double x, double y, double radius, double red, double green, double blue);
+    Stipple(float x, float y, float radius, float grey);
+    Stipple(float x, float y, float radius, float red, float green, float blue);
 
-    double getX() const;
-    double getY() const;
-    double getRadius() const;
+    float getX() const;
+    float getY() const;
+    float getRadius() const;
 
-    double getRed() const;
-    double getGreen() const;
-    double getBlue() const;
-    double getGrey() const;
+    float getRed() const;
+    float getGreen() const;
+    float getBlue() const;
+    float getGrey() const;
 
-    void setX(double x);
-    void setY(double y);
-    void setRadius(double radius);
+    void setX(float x);
+    void setY(float y);
+    void setRadius(float radius);
 
-    void setRed(double red);
-    void setGreen(double green);
-    void setBlue(double blue);
-    void setGrey(double grey);
+    void setRed(float red);
+    void setGreen(float green);
+    void setBlue(float blue);
+    void setGrey(float grey);
 
     friend std::ostream& operator<<(std::ostream& out, const Stipple& stipple);
 
 private:
-    double x, y;                //x and y positions in the image
-    double radius;              //radius of the stipple
-    double red, green, blue;    //colour of the stipple
+    float x, y;                //x and y positions in the image
+    float radius;              //radius of the stipple
+    float red, green, blue;    //colour of the stipple
 };

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\stippler">
+      <UniqueIdentifier>{f205b1db-563d-4136-8c81-e94e1c2b747e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{4a488c78-9104-4704-bd14-094548f48220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{d230f3d4-e4e8-40af-9f51-048902621de3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stippler">
+      <UniqueIdentifier>{ccbdaf5e-a096-41ed-a65c-52a4a8889efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\voronoi">
+      <UniqueIdentifier>{3e2f4470-ee8f-443a-92b4-93c49d4794e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\voronoi">
+      <UniqueIdentifier>{6b9f3a0e-bb9a-4ed9-9f89-50dc9ef71195}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stippler\Stipple.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Random.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\Stippler.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\VoronoiDiagramGenerator.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
+    <ClCompile Include="voronoi\Voronoi.cpp">
+      <Filter>Source Files\voronoi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stippler\Stipple.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Random.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\Stippler.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\VoronoiDiagramGenerator.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="voronoi\Voronoi.h">
+      <Filter>Header Files\voronoi</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

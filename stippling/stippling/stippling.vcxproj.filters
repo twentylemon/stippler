@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="util\Random.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\Stippler.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\Stipple.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\VoronoiDiagramGenerator.cpp">
+      <Filter>Source Files\voronoi</Filter>
+    </ClCompile>
+    <ClCompile Include="voronoi\Voronoi.cpp">
+      <Filter>Source Files\voronoi</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="util\Random.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\Stipple.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\Stippler.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\VoronoiDiagramGenerator.h">
+      <Filter>Header Files\voronoi</Filter>
+    </ClInclude>
+    <ClInclude Include="voronoi\Voronoi.h">
+      <Filter>Header Files\voronoi</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{e9088197-fd90-43eb-8698-836f468245c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0c8dc676-c815-4bf9-a144-9f98d8b7042b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{e2ae8832-6558-415d-af22-266cd9db3976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\voronoi">
+      <UniqueIdentifier>{dc06131f-0965-4212-b974-6fea5a593746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\stippler">
+      <UniqueIdentifier>{32396b0c-0506-4dce-9ed7-17a2e2c36e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{9280ab15-4cd5-4dde-a5fe-424a993b74dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\voronoi">
+      <UniqueIdentifier>{0d171b7b-c42e-4b90-ad75-30b7fb9a6689}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stippler">
+      <UniqueIdentifier>{a2be4580-29c9-48dc-99fe-45ca5751982b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

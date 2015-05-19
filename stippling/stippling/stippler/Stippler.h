@@ -17,6 +17,8 @@
 #include "../voronoi/Voronoi.h"
 class Voronoi;
 
+#include "FinalizeParams.h"
+
 // class to do weighted voronoi stippling
 class Stippler
 {
@@ -44,20 +46,6 @@ public:
     void resetVoronoi();
     std::pair<float,float> lloydsMethod();
 
-    static const int RADIUS_MODE_LINEAR = 0x01;
-    static const int RADIUS_MODE_TRIG   = RADIUS_MODE_LINEAR << 1;
-    class FinalizeParams {
-    public:
-        FinalizeParams() :
-            radiusMode(RADIUS_MODE_LINEAR),
-            radiusScale(2.0f) {}
-        FinalizeParams(int radiusMode, float radiusScale) :
-            radiusMode(radiusMode),
-            radiusScale(radiusScale) {}
-
-        int radiusMode;
-        float radiusScale;
-    };
     void finalize(const FinalizeParams& params);
 
     friend std::ostream& operator<<(std::ostream& out, const Stippler& stippler);

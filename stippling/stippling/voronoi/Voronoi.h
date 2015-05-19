@@ -37,6 +37,8 @@ public:
     float getMaxMass();
     float getAvgMass();
 
+    const std::vector<int>& getDiagram() const;
+
 private:
     void glInit(const Stippler& stippler) const;
 

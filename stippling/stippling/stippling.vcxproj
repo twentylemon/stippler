@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h" />
+    <ClInclude Include="stippler\FinalizeParams.h" />
     <ClInclude Include="stippler\Image.h" />
     <ClInclude Include="stippler\Stipple.h" />
     <ClInclude Include="stippler\Stippler.h" />
@@ -20,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="stippler\FinalizeParams.cpp" />
     <ClCompile Include="stippler\Image.cpp" />
     <ClCompile Include="stippler\Stipple.cpp" />
     <ClCompile Include="stippler\Stippler.cpp" />

@@ -1,7 +1,6 @@
 
 #include "main.h"
 
-int glutWindow;
 Stippler stippler;
 
 void keyboardFunc(unsigned char key, int x, int y) {
@@ -10,9 +9,10 @@ void keyboardFunc(unsigned char key, int x, int y) {
         glutLeaveMainLoop();
         //break;
     case 's':
-        stippler.finalize(Stippler::FinalizeParams(
-            Stippler::RADIUS_MODE_LINEAR,
-            2.0f
+        stippler.finalize(FinalizeParams(
+            FinalizeParams::RADIUS_FUNC_LINEAR,
+            0.85f,
+            FinalizeParams::RADIUS_MODE_MASS
         ));
         std::ofstream svg("../../output.svg");
         svg << stippler;
@@ -31,6 +31,7 @@ void displayFunc() {
 }
 
 int main(int argc, char** argv) {
+    Random::initSeed();
     //stippler = Stippler("../../images/blue_stuff.png", 25000);
     //stippler = Stippler("../../images/earth.tiff", 100000);
     //stippler = Stippler("../../images/stripes.jpg", 10000);
@@ -51,15 +52,15 @@ int main(int argc, char** argv) {
     //stippler = Stippler("../../images/frog.JPG", 35000);
     //stippler = Stippler("../../images/chaika05.JPG", 35000);
     //stippler = Stippler("../../images/horse2.JPG", 50000);
-    //stippler = Stippler("../../images/boats.JPG", 60000);
+    stippler = Stippler("../../images/boats.JPG", 60000);
     //stippler = Stippler("../../images/pacman.jpg", 60000);
-    stippler = Stippler("../../images/moop02.JPG", 35000);
+    //stippler = Stippler("../../images/moop02.JPG", 55000);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE | GLUT_DEPTH);
     glutInitWindowSize(stippler.getWidth(), stippler.getHeight());
     glutInitWindowPosition(30, 30);
-    glutWindow = glutCreateWindow("voronoi");
+    glutCreateWindow("voronoi");
 
     glClearColor(0, 0, 0, 1);
     glMatrixMode(GL_PROJECTION | GL_MATRIX_MODE);
@@ -70,6 +71,5 @@ int main(int argc, char** argv) {
     glutIdleFunc(displayFunc);
     glutKeyboardFunc(keyboardFunc);
     glutMainLoop();
-
     return 0;
 }

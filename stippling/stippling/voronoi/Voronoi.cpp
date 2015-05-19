@@ -82,6 +82,12 @@ float Voronoi::getAvgMass() {
     return avgMass;
 }
 
+// returns the diagram in the previous iteration
+// diagram[i] => index of stipple in pixel #i, where i goes row-wise
+const std::vector<int>& Voronoi::getDiagram() const {
+    return diagram;
+}
+
 // translates the index into a color
 std::array<GLubyte, 3> Voronoi::idx2Color(int idx) const {
     idx *= VISIBILITY_FACTOR;

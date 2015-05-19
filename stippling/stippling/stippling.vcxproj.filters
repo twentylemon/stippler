@@ -19,6 +19,9 @@
     <ClCompile Include="stippler\Image.cpp">
       <Filter>Source Files\stippler</Filter>
     </ClCompile>
+    <ClCompile Include="stippler\FinalizeParams.cpp">
+      <Filter>Source Files\stippler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -37,6 +40,9 @@
       <Filter>Header Files\voronoi</Filter>
     </ClInclude>
     <ClInclude Include="stippler\Image.h">
+      <Filter>Header Files\stippler</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\FinalizeParams.h">
       <Filter>Header Files\stippler</Filter>
     </ClInclude>
   </ItemGroup>

@@ -122,14 +122,50 @@ std::pair<float,float> Stippler::lloydsMethod() {
 // onces all the stipples are in their spots, call this method to resize the stipples
 // depending on the source image
 void Stippler::finalize(const FinalizeParams& params) {
-    std::for_each(stipples.begin(), stipples.end(), [&params,this](Stipple& stipple){
-        if (params.radiusMode == RADIUS_MODE_LINEAR) {
-            stipple.setRadius(params.radiusScale * stipple.getMass() / voronoi.getMaxMass());
+    std::function<float(float,float)> ratio = [&params](float mass, float maxMass){
+        if (params.radiusFunc == FinalizeParams::RADIUS_FUNC_LINEAR) {
+            return mass / maxMass;
         }
-        else if (params.radiusMode == RADIUS_MODE_TRIG) {
-            stipple.setRadius(params.radiusScale * 0.5f*(1.0f-std::cos(3.1415926535897f*stipple.getMass()/voronoi.getMaxMass())));
+        else if (params.radiusFunc == FinalizeParams::RADIUS_FUNC_TRIG) {
+            return 0.5f*(1.0f-std::cos(3.1415926535897f*mass/maxMass));
         }
-    });
+        return 0.5f;    //on failure, middle size
+    };
+
+    if (params.radiusMode == FinalizeParams::RADIUS_MODE_SCALAR) {
+        std::for_each(stipples.begin(), stipples.end(), [&params,&ratio,this](Stipple& stipple){
+            stipple.setRadius(params.radiusScale * ratio(stipple.getMass(), voronoi.getMaxMass()));
+        });
+    }
+    else if (params.radiusMode == FinalizeParams::RADIUS_MODE_RELATIVE) {
+        std::vector<float> distances(getNumStipples(), 0.0f);   // max distance from each stipple to adjacent stipples
+        std::vector<int> diagram = voronoi.getDiagram();
+        // function to update the distances given two pixel indexes which are adjacent on the screen
+        std::function<void(int,int)> updateDistance = [&diagram,&distances,this](int pixel, int adjacent){
+            if (adjacent >= 0 && adjacent < (int)diagram.size() && diagram[pixel] != diagram[adjacent]) {
+                Stipple& s1 = stipples[diagram[pixel]];
+                Stipple& s2 = stipples[diagram[adjacent]];
+                distances[diagram[pixel]] = std::max(distances[diagram[pixel]],
+                    std::sqrt( std::pow(s1.getX() - s2.getX(), 2) + std::pow(s1.getY() - s2.getY(), 2) ));
+            }
+        };
+        for (unsigned i = 0; i < diagram.size(); i++) {
+            if (i % getWidth() != getWidth() - 1)
+                updateDistance(i, i+1);
+            if (i % getWidth() != 0)
+                updateDistance(i, i-1);
+            updateDistance(i, i+getWidth());
+            updateDistance(i, i-getWidth());
+        }
+        for (int i = 0; i < getNumStipples(); i++) {
+            stipples[i].setRadius(params.radiusScale * distances[i] * ratio(stipples[i].getMass(), voronoi.getMaxMass()));
+        }
+    }
+    else if (params.radiusMode == FinalizeParams::RADIUS_MODE_MASS) {
+        std::for_each(stipples.begin(), stipples.end(), [&params,&ratio,this](Stipple& stipple){
+            stipple.setRadius(params.radiusScale * std::sqrt(stipple.getMass() / 3.1415926535897f));
+        });
+    }
 }
 
 

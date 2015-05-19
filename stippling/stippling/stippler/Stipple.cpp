@@ -11,7 +11,8 @@ Stipple::Stipple(float x, float y, float radius, float grey) :
     x(x),
     y(y),
     radius(radius),
-    red(grey), green(grey), blue(grey)
+    red(grey), green(grey), blue(grey),
+    alpha(1.0f)
 {
 }
 
@@ -25,7 +26,8 @@ Stipple::Stipple(float x, float y, float radius, float red, float green, float b
     x(x),
     y(y),
     radius(radius),
-    red(red), green(green), blue(blue)
+    red(red), green(green), blue(blue),
+    alpha(1.0f)
 {
 }
 
@@ -62,6 +64,11 @@ float Stipple::getBlue() const {
 // returns the greyscale colour of this stipple
 float Stipple::getGrey() const {
     return (getRed() + getGreen() + getBlue()) / 3.0f;
+}
+
+// returns the alpha channel value of the stipple
+float Stipple::getAlpha() const {
+    return alpha;
 }
 
 // returns the mass of the voronoi region this stipple is in
@@ -116,6 +123,11 @@ void Stipple::setGrey(float grey) {
     setBlue(grey);
 }
 
+// sets the new alpha channel value of this stipple
+void Stipple::setAlpha(float alpha) {
+    this->alpha = alpha;
+}
+
 // sets the new mass of the voronoi region this stipple is in
 void Stipple::setMass(float mass) {
     this->mass = mass;
@@ -144,7 +156,7 @@ std::ostream& operator<<(std::ostream& out, const Stipple& stipple) {
         << " cx=\"" << stipple.getX() << "\""
         << " cy=\"" << stipple.getY() << "\""
         << " r=\"" << stipple.getRadius() << "\""
-        << " fill=\"rgb(" << (unsigned int)(255 * stipple.getRed()) << "," << (unsigned int)(255 * stipple.getGreen()) << "," << (unsigned int)(255 * stipple.getBlue()) << ")\""
+        << " fill=\"rgba(" << (unsigned)(255*stipple.getRed()) << "," << (unsigned)(255*stipple.getGreen()) << "," << (unsigned)(255*stipple.getBlue()) << "," << (unsigned)(255*stipple.getAlpha()) << ")\""
         << "/>";
     return out;
 }

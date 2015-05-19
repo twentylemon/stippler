@@ -24,14 +24,15 @@ class Stippler
 {
 public:
     Stippler();
-    Stippler(int width, int height, int numStipples);
-    Stippler(std::string file, int numStipples);
+    Stippler(int width, int height, unsigned int numStipples);
+    Stippler(std::string file, unsigned int numStipples);
 
     int getWidth() const;
     int getHeight() const;
     int getNumStipples() const;
     std::vector<Stipple>& getStipples();
     const std::vector<Stipple>& getStipples() const;
+    Image& getImage();
     const Image& getImage() const;
 
     Stipple& operator[](int index);
@@ -46,6 +47,7 @@ public:
     void resetVoronoi();
     std::pair<float,float> lloydsMethod();
 
+    void initStipples(unsigned int numStipples);
     void finalize(const FinalizeParams& params);
 
     friend std::ostream& operator<<(std::ostream& out, const Stippler& stippler);
@@ -54,11 +56,9 @@ private:
     typedef std::pair<float,float> Point;
     typedef std::pair<Point,Point> Edge;
 
-    void initStipples(int numStipples);
-
     int width, height;
     std::vector<Stipple> stipples;
     std::map<Point, std::vector<Edge>> edgeMap;
 
-    Image image;
+    Image original, ntsc;
 };

@@ -2,6 +2,7 @@
 #include "main.h"
 
 Stippler stippler;
+FinalizeParams params;
 
 void keyboardFunc(unsigned char key, int x, int y) {
     switch (key) {
@@ -9,11 +10,7 @@ void keyboardFunc(unsigned char key, int x, int y) {
         glutLeaveMainLoop();
         //break;
     case 's':
-        stippler.finalize(FinalizeParams(
-            FinalizeParams::RADIUS_FUNC_LINEAR,
-            0.85f,
-            FinalizeParams::RADIUS_MODE_MASS
-        ));
+        stippler.finalize(params);
         std::ofstream svg("../../output.svg");
         svg << stippler;
         svg.close();
@@ -43,7 +40,7 @@ int main(int argc, char** argv) {
     //stippler = Stippler("../../images/chaika04.JPG", 35000);
     //stippler = Stippler("../../images/horse.JPG", 20000);
     //stippler = Stippler("../../images/girl.JPG", 35000);
-    //stippler = Stippler("../../images/sleepy_pup.JPG", 35000);
+    stippler = Stippler("../../images/sleepy_pup.JPG", 35000);
     //stippler = Stippler("../../images/erin01.JPG", 35000);
     //stippler = Stippler("../../images/chaika03.JPG", 35000);
     //stippler = Stippler("../../images/odyssey.jpg", 50000);
@@ -52,9 +49,21 @@ int main(int argc, char** argv) {
     //stippler = Stippler("../../images/frog.JPG", 35000);
     //stippler = Stippler("../../images/chaika05.JPG", 35000);
     //stippler = Stippler("../../images/horse2.JPG", 50000);
-    stippler = Stippler("../../images/boats.JPG", 60000);
+    //stippler = Stippler("../../images/boats.JPG", 60000);
     //stippler = Stippler("../../images/pacman.jpg", 60000);
     //stippler = Stippler("../../images/moop02.JPG", 55000);
+
+    if (true) {
+        stippler.getImage().reset();
+        stippler.getImage().applyCosineFilter();
+        stippler.initStipples(stippler.getNumStipples());
+    }
+    params = FinalizeParams(
+        FinalizeParams::RADIUS_FUNC_LINEAR,
+        0.85f,
+        FinalizeParams::RADIUS_MODE_MASS,
+        true
+    );
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE | GLUT_DEPTH);

@@ -6,24 +6,24 @@ static Voronoi voronoi;
 Stippler::Stippler() :
     width(0),
     height(0),
-    image(Image(0, 0))
+    original(Image(0, 0))
 {
 }
 
 // initializes the stippler
-Stippler::Stippler(int width, int height, int numStipples) : 
+Stippler::Stippler(int width, int height, unsigned int numStipples) : 
     width(width),
     height(height),
-    image(Image(width, height))
+    original(Image(width, height))
 {
     initStipples(numStipples);
 }
 
 // initializes the stippler using the file as the image to stipple
-Stippler::Stippler(std::string file, int numStipples) {
-    image = Image(file);
-    setWidth(image.getWidth());
-    setHeight(image.getHeight());
+Stippler::Stippler(std::string file, unsigned int numStipples) {
+    original = Image(file);
+    setWidth(original.getWidth());
+    setHeight(original.getHeight());
     initStipples(numStipples);
 }
 
@@ -63,8 +63,13 @@ const Stipple& Stippler::operator[](int index) const {
 }
 
 // returns the image
+Image& Stippler::getImage() {
+    return original;
+}
+
+// returns the image
 const Image& Stippler::getImage() const {
-    return image;
+    return original;
 }
 
 // sets the new image width
@@ -79,26 +84,30 @@ void Stippler::setHeight(int height) {
 
 // returns how much tone there is in the source image at the specified pixel coord
 float Stippler::getImageTone(int i) const {
-    Image::Pixel pixel = image.getPixel(i);
-    return 1.0f - (0.2126f*pixel.red + 0.7152f*pixel.green + 0.0722f*pixel.blue) / 255.0f;
+    Image::Pixel pixel = ntsc.getPixel(i);
+    return 1.0f - (pixel.red + pixel.green + pixel.blue) / 3.0f / 255.0f;
 }
 
 // returns how much tone there is in the source image at the specified pixel coord
 float Stippler::getImageTone(int x, int y) const {
-    Image::Pixel pixel = image.getPixel(x, y);
-    return 1.0f - (0.2126f*pixel.red + 0.7152f*pixel.green + 0.0722f*pixel.blue) / 255.0f;
+    Image::Pixel pixel = ntsc.getPixel(x, y);
+    return 1.0f - (pixel.red + pixel.green + pixel.blue) / 3.0f / 255.0f;
 }
 
 
 // initializes the list of stipples, randomly placing them in the plane for now
-void Stippler::initStipples(int numStipples) {
-    while (stipples.size() < (unsigned)numStipples) {
+void Stippler::initStipples(unsigned int numStipples) {
+    ntsc = original;
+    ntsc.toNTSC();
+    std::cerr << "distributing " << numStipples << " stipples...";
+    while (stipples.size() < numStipples) {
         float x = getWidth() * Random::nextFloat();
         float y = getHeight() * Random::nextFloat();
         if (Random::nextInt(256) <= getImageTone((int)x, (int)y)) {
             stipples.push_back(Stipple(x, y, 1.0, 0.0));
         }
     }
+    std::cerr << "done!" << std::endl;
 }
 
 
@@ -164,6 +173,23 @@ void Stippler::finalize(const FinalizeParams& params) {
     else if (params.radiusMode == FinalizeParams::RADIUS_MODE_MASS) {
         std::for_each(stipples.begin(), stipples.end(), [&params,&ratio,this](Stipple& stipple){
             stipple.setRadius(params.radiusScale * std::sqrt(stipple.getMass() / 3.1415926535897f));
+        });
+    }
+
+    if (params.colorMode) {
+        int i = 0;
+        std::vector<int> diagram = voronoi.getDiagram();
+        /*std::for_each(stipples.begin(), stipples.end(), [](Stipple& stipple){
+            stipple.setRed(0.0f);
+            stipple.setGreen(0.0f);
+            stipple.setBlue(0.0f);
+        });*/
+        std::for_each(diagram.begin(), diagram.end(), [&i,this](int idx){
+            Image::Pixel pixel = original.getPixel(i++);
+            Stipple& stipple = stipples[idx];
+            stipple.setRed(stipple.getRed() + pixel.red/255.0f/stipple.getMass());
+            stipple.setGreen(stipple.getGreen() + pixel.green/255.0f/stipple.getMass());
+            stipple.setBlue(stipple.getBlue() + pixel.blue/255.0f/stipple.getMass());
         });
     }
 }

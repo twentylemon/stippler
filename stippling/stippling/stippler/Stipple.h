@@ -21,6 +21,7 @@ public:
     float getGreen() const;
     float getBlue() const;
     float getGrey() const;
+    float getAlpha() const;
 
     float getMass() const;
     float getXMoment() const;
@@ -34,6 +35,7 @@ public:
     void setGreen(float green);
     void setBlue(float blue);
     void setGrey(float grey);
+    void setAlpha(float alpha);
 
     void setMass(float mass);
     void setXMoment(float xMoment);
@@ -48,4 +50,5 @@ private:
     float radius;               // radius of the stipple
     float red, green, blue;     // colour of the stipple
     float mass, xMom, yMom;     // moments of the voronoi region
+    float alpha;
 };

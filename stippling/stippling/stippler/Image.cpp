@@ -29,6 +29,16 @@ Image::Image(int width, int height) : width(width), height(height), numPixels(wi
     }
 }
 
+// copies the image
+Image::Image(const Image& image) : width(image.getWidth()), height(image.getHeight()), numPixels(image.getNumPixels()) {
+    data.resize(numPixels);
+    buffer.resize(numPixels);
+    orig.resize(numPixels);
+    for (int i = 0; i < numPixels; i++) {
+        orig[i] = data[i] = buffer[i] = image.orig[i];
+    }
+}
+
 /**
  * Class constructor. Reads the image from the file name specified.
  *
@@ -190,7 +200,7 @@ void Image::reset() {
 // changes this image to grey scale
 void Image::toGreyScale() {
     std::cerr << "Greyscaling image...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         int grey = (pixel.red + pixel.green + pixel.blue) / 3;
         return Pixel(grey, grey, grey);
     });
@@ -201,8 +211,19 @@ void Image::toGreyScale() {
 // changes this image to NTSC grey scale
 void Image::toNTSC() {
     std::cerr << "NTSC greyscaling image...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
-        int grey = (int)(0.229*pixel.red + 0.587*pixel.green + 0.114*pixel.blue);
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
+        int grey = (int)(0.299*pixel.red + 0.587*pixel.green + 0.114*pixel.blue);
+        return Pixel(grey, grey, grey);
+    });
+    copyBuffer();
+    std::cerr << "done!" << std::endl;
+}
+
+// changes this image to a intensity tone version
+void Image::toTone() {
+    std::cerr << "Intensity toning image...";
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
+        int grey = (int)(0.2126*pixel.red + 0.7152*pixel.green + 0.0722*pixel.blue);
         return Pixel(grey, grey, grey);
     });
     copyBuffer();
@@ -212,7 +233,7 @@ void Image::toNTSC() {
 // changes this image to monochrome black and white
 void Image::toMonochrome() {
     std::cerr << "Monochroming image...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         if (pixel.red + pixel.green + pixel.blue > 3*255/2) {
             return Pixel(255, 255, 255);
         }
@@ -225,7 +246,7 @@ void Image::toMonochrome() {
 // inverts every pixel color in this image
 void Image::toInverted() {
     std::cerr << "Inverting image...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(255 - pixel.red, 255 - pixel.green, 255 - pixel.blue);
     });
     copyBuffer();
@@ -235,7 +256,7 @@ void Image::toInverted() {
 // displays only the red channel of this image
 void Image::toRedOnly() {
     std::cerr << "Displaying red channel only...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(pixel.red, 0, 0);
     });
     copyBuffer();
@@ -245,7 +266,7 @@ void Image::toRedOnly() {
 // displays only the green channel of this image
 void Image::toGreenOnly() {
     std::cerr << "Displaying green channel only...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(0, pixel.green, 0);
     });
     copyBuffer();
@@ -255,7 +276,7 @@ void Image::toGreenOnly() {
 // displays only the blue channel of this image
 void Image::toBlueOnly() {
     std::cerr << "Displaying blue channel only...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(0, 0, pixel.blue);
     });
     copyBuffer();
@@ -318,7 +339,7 @@ void Image::applyMinFilter() {
 // factor: how much to brighten the channel
 void Image::applyRedIntensifyFilter(double factor) {
     std::cerr << "Applying red intensify filter, factor = " << factor << "...";
-    std::transform(data.begin(), data.end(), buffer.end(), [factor](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [factor](const Pixel& pixel) {
         return Pixel(std::min(255, (int)(factor * pixel.red)), pixel.green, pixel.blue);
     });
     copyBuffer();
@@ -329,7 +350,7 @@ void Image::applyRedIntensifyFilter(double factor) {
 // factor: how much to brighten the channel
 void Image::applyGreenIntensifyFilter(double factor) {
     std::cerr << "Applying green intensify filter, factor = " << factor << "...";
-    std::transform(data.begin(), data.end(), buffer.end(), [factor](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [factor](const Pixel& pixel) {
         return Pixel(pixel.red, std::min(255, (int)(factor * pixel.green)), pixel.blue);
     });
     copyBuffer();
@@ -340,7 +361,7 @@ void Image::applyGreenIntensifyFilter(double factor) {
 // factor: how much to brighten the channel
 void Image::applyBlueIntensifyFilter(double factor) {
     std::cerr << "Applying blue intensify filter, factor = " << factor << "...";
-    std::transform(data.begin(), data.end(), buffer.end(), [factor](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [factor](const Pixel& pixel) {
         return Pixel(pixel.red, pixel.green, std::min(255, (int)(factor * pixel.blue)));
     });
     copyBuffer();
@@ -388,9 +409,9 @@ void Image::applyMaskFilter(double mask[9]) {
             if (maskSum == 0)
                 maskSum = 1;
             
-            buffer[pix].red = (GLubyte)std::min(255.0, std::max(0.0, redSum / maskSum));
-            buffer[pix].green = (GLubyte)std::min(255.0, std::max(0.0, greenSum / maskSum));
-            buffer[pix].blue = (GLubyte)std::min(255.0, std::max(0.0, blueSum / maskSum));
+            buffer[pix] = Pixel((GLubyte)std::min(255.0, std::max(0.0, redSum / maskSum)),
+                (GLubyte)std::min(255.0, std::max(0.0, greenSum / maskSum)),
+                (GLubyte)std::min(255.0, std::max(0.0, blueSum / maskSum)));
         }
     }
     copyBuffer();
@@ -437,7 +458,7 @@ void Image::applyManyMaskFilters(double masks[][9], int num) {
 // and the period of the sine wave in 256. So it goes through one cycle in the range 0-255.
 void Image::applySineFilter() {
     std::cerr << "Applying sine filter...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(
             (GLubyte)(127.5 * (std::sin(2*3.1415926535897 / 256 * pixel.red) + 1)),
             (GLubyte)(127.5 * (std::sin(2*3.1415926535897 / 256 * pixel.green) + 1)),
@@ -451,7 +472,7 @@ void Image::applySineFilter() {
 // and the period of the cosine wave in 256. So it goes through one cycle in the range 0-255.
 void Image::applyCosineFilter() {
     std::cerr << "Applying cosine filter...";
-    std::transform(data.begin(), data.end(), buffer.end(), [](const Pixel& pixel) {
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(
             (GLubyte)(127.5 * (std::cos(2*3.1415926535897 / 256 * pixel.red) + 1)),
             (GLubyte)(127.5 * (std::cos(2*3.1415926535897 / 256 * pixel.green) + 1)),

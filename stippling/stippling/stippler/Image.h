@@ -17,6 +17,7 @@ public:
     Image();
     Image(int width, int height);
     Image(std::string file);
+    Image(const Image& image);
 
     class Pixel {
     public:
@@ -49,6 +50,7 @@ public:
     void reset();
     void toGreyScale();
     void toNTSC();
+    void toTone();
     void toMonochrome();
     void toInverted();
     void toRedOnly();

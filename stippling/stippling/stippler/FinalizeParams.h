@@ -7,7 +7,7 @@
 class FinalizeParams {
 public:
     FinalizeParams();
-    FinalizeParams(int radiusFunc, float radiusScale, int radiusMode);
+    FinalizeParams(int radiusFunc, float radiusScale, int radiusMode, bool colorMode = false);
 
     static const int RADIUS_FUNC_LINEAR = 0x01;
     static const int RADIUS_FUNC_TRIG   = RADIUS_FUNC_LINEAR << 1;
@@ -18,4 +18,5 @@ public:
     int radiusFunc;
     float radiusScale;
     int radiusMode;
+    bool colorMode;
 };

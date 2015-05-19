@@ -4,15 +4,17 @@
 FinalizeParams::FinalizeParams() :
         radiusFunc(RADIUS_FUNC_LINEAR),
     radiusScale(2.0f),
-    radiusMode(RADIUS_MODE_SCALAR)
+    radiusMode(RADIUS_MODE_SCALAR),
+    colorMode(false)
 {
 }
 
 
-FinalizeParams::FinalizeParams(int radiusFunc, float radiusScale, int radiusMode) :
+FinalizeParams::FinalizeParams(int radiusFunc, float radiusScale, int radiusMode, bool colorMode) :
     radiusFunc(radiusFunc),
     radiusScale(radiusScale),
-    radiusMode(radiusMode)
+    radiusMode(radiusMode),
+    colorMode(colorMode)
 {
 }
 

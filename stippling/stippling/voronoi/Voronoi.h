@@ -4,10 +4,10 @@
 #include <array>
 #include <vector>
 
-#include <GL/glut.h>
-
-#include <stippler/Stippler.h>
+#include "../stippler/Stippler.h"
 class Stippler;
+
+#include <GL/glut.h>
 
 class Voronoi
 {
@@ -31,6 +31,11 @@ public:
     void setHeight(GLdouble height);
     void setSlices(GLint slices);
     void setStacks(GLint stacks);
+    
+    float getMaxMovement();
+    float getAvgMovement();
+    float getMaxMass();
+    float getAvgMass();
 
 private:
     void glInit(const Stippler& stippler) const;
@@ -39,4 +44,6 @@ private:
     GLint slices, stacks;
     std::vector<GLubyte> pixels;
     std::vector<int> diagram;
+    float maxMovement, avgMovement;
+    float maxMass, avgMass;
 };

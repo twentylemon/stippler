@@ -60,7 +60,7 @@ double Random::nextDouble() {
  * @return the max random value, exclusive
  */
 unsigned int Random::getRandMax() {
-    return RAND_MAX;
+    return RAND_MAX + 1;
 }
 
 /**

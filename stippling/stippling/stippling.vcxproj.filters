@@ -13,11 +13,11 @@
     <ClCompile Include="stippler\Stipple.cpp">
       <Filter>Source Files\stippler</Filter>
     </ClCompile>
-    <ClCompile Include="stippler\VoronoiDiagramGenerator.cpp">
-      <Filter>Source Files\voronoi</Filter>
-    </ClCompile>
     <ClCompile Include="voronoi\Voronoi.cpp">
       <Filter>Source Files\voronoi</Filter>
+    </ClCompile>
+    <ClCompile Include="stippler\Image.cpp">
+      <Filter>Source Files\stippler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -33,11 +33,11 @@
     <ClInclude Include="stippler\Stippler.h">
       <Filter>Header Files\stippler</Filter>
     </ClInclude>
-    <ClInclude Include="stippler\VoronoiDiagramGenerator.h">
-      <Filter>Header Files\voronoi</Filter>
-    </ClInclude>
     <ClInclude Include="voronoi\Voronoi.h">
       <Filter>Header Files\voronoi</Filter>
+    </ClInclude>
+    <ClInclude Include="stippler\Image.h">
+      <Filter>Header Files\stippler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,61 +1,75 @@
 
 #include "main.h"
 
-Voronoi vor;
+int glutWindow;
 Stippler stippler;
 
+void keyboardFunc(unsigned char key, int x, int y) {
+    switch (key) {
+    case 'q':
+        glutLeaveMainLoop();
+        //break;
+    case 's':
+        stippler.finalize(Stippler::FinalizeParams(
+            Stippler::RADIUS_MODE_LINEAR,
+            2.0f
+        ));
+        std::ofstream svg("../../output.svg");
+        svg << stippler;
+        svg.close();
+        break;
+    }
+}
+
 void displayFunc() {
-    /*
-    std::vector<Stipple> stipples = stippler.getStipples();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLfloat radius = 200.0f, height = 25.0f;
-    GLint stacks = 10, slices = 40;
-
-    glPushMatrix();
-    glColor3f(1, 0, 0);
-    glTranslatef(stipples[0].getX(), stipples[0].getY(), 0);
-    glutSolidCone(radius, height, slices, stacks);
-    glPopMatrix();
-    
-
-    glPushMatrix();
-    glColor3f(0,10, 0);
-    glTranslatef(stipples[1].getX(), stipples[1].getY(), 0);
-    glutSolidCone(radius, height, slices, stacks);
-    glPopMatrix();
-
-    glPushMatrix();
-    glColor3f(0, 0, 1);
-    glTranslatef(stipples[2].getX(), stipples[2].getY(), 0);
-    glutSolidCone(radius, height, slices, stacks);
-    glPopMatrix();
-    */
-    vor.redistributeStipples(stippler);
+    std::pair<float,float> moves = stippler.lloydsMethod();
+    std::cout << "avg = " << moves.first << "\tmax = " << moves.second << std::endl;
     glFlush();
-    //Sleep(1000);
+    if (moves.first < 0.001f || moves.second < 0.001f) {
+        keyboardFunc('q', 0, 0);
+    }
 }
 
 int main(int argc, char** argv) {
-    stippler = Stippler(600, 400, 1000);
-    std::ofstream svg("output.svg");
-    svg << stippler;
-    svg.close();
+    //stippler = Stippler("../../images/blue_stuff.png", 25000);
+    //stippler = Stippler("../../images/earth.tiff", 100000);
+    //stippler = Stippler("../../images/stripes.jpg", 10000);
+    //stippler = Stippler("../../images/zoidberg.tiff", 25000);
+    //stippler = Stippler("../../images/toto.tiff", 15000);
+    //stippler = Stippler("../../images/smiley.tiff", 35000);
+    //stippler = Stippler("../../images/chaika01.jpg", 20000);
+    //stippler = Stippler("../../images/chaika02.jpg", 35000);
+    //stippler = Stippler("../../images/chaika04.JPG", 35000);
+    //stippler = Stippler("../../images/horse.JPG", 20000);
+    //stippler = Stippler("../../images/girl.JPG", 35000);
+    //stippler = Stippler("../../images/sleepy_pup.JPG", 35000);
+    //stippler = Stippler("../../images/erin01.JPG", 35000);
+    //stippler = Stippler("../../images/chaika03.JPG", 35000);
+    //stippler = Stippler("../../images/odyssey.jpg", 50000);
+    //stippler = Stippler("../../images/moop.jpg", 50000);
+    //stippler = Stippler("../../images/erin02.JPG", 50000);
+    //stippler = Stippler("../../images/frog.JPG", 35000);
+    //stippler = Stippler("../../images/chaika05.JPG", 35000);
+    //stippler = Stippler("../../images/horse2.JPG", 50000);
+    //stippler = Stippler("../../images/boats.JPG", 60000);
+    //stippler = Stippler("../../images/pacman.jpg", 60000);
+    stippler = Stippler("../../images/moop02.JPG", 35000);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_SINGLE | GLUT_DEPTH);
     glutInitWindowSize(stippler.getWidth(), stippler.getHeight());
     glutInitWindowPosition(30, 30);
-    int glutWindow = glutCreateWindow("voronoi");
+    glutWindow = glutCreateWindow("voronoi");
 
     glClearColor(0, 0, 0, 1);
     glMatrixMode(GL_PROJECTION | GL_MATRIX_MODE);
     glEnable(GL_DEPTH_TEST);
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    glOrtho(0, 200, 200, 0, -100, 100);
+    glOrtho(0, stippler.getWidth(), 0, stippler.getHeight(), 0, 1);
 
     glutDisplayFunc(displayFunc);
     glutIdleFunc(displayFunc);
+    glutKeyboardFunc(keyboardFunc);
     glutMainLoop();
-    //system("pause");
+
     return 0;
 }

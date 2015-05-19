@@ -2,14 +2,14 @@
 
 #include "Voronoi.h"
 
-const int VISIBILITY_FACTOR = 1000;
+const int VISIBILITY_FACTOR = 1;
 
 // initializes the class with some default cone parameters
 Voronoi::Voronoi() : 
     radius(200.0),
     height(25.0),
     slices(40),
-    stacks(10)
+    stacks(5)
 {
 }
 
@@ -62,6 +62,26 @@ void Voronoi::setStacks(GLint stacks) {
     this->stacks = stacks;
 }
 
+// returns the furthest distance a stipple moved in the previous iteration
+float Voronoi::getMaxMovement() {
+    return maxMovement;
+}
+
+// returns the average distance a stipple moved in the previous iteration
+float Voronoi::getAvgMovement() {
+    return avgMovement;
+}
+
+// returns the largest mass of a stipple in the previous iteration
+float Voronoi::getMaxMass() {
+    return maxMass;
+}
+
+// returns the average mass of a stipple in the previous iteration
+float Voronoi::getAvgMass() {
+    return avgMass;
+}
+
 // translates the index into a color
 std::array<GLubyte, 3> Voronoi::idx2Color(int idx) const {
     idx *= VISIBILITY_FACTOR;
@@ -97,10 +117,10 @@ void Voronoi::glInit(const Stippler& stippler) const {
 void Voronoi::calculateDiagram(const Stippler& stippler) {
     glInit(stippler);
     int i = 0;
-    std::for_each(stippler.getStipples().begin(), stippler.getStipples().end(), [&i, this](const Stipple& stipple){
+    std::for_each(stippler.getStipples().begin(), stippler.getStipples().end(), [&i, this](const Stipple& stipple) {
         glPushMatrix();
         glColor3ubv(idx2Color(i++).data());
-        glTranslatef(stipple.getX(), stipple.getY(), 0.0f);
+        glTranslatef(stipple.getX() + 0.5f, stipple.getY() - 0.5f, 0.0f);
         glutSolidCone(getRadius(), getHeight(), getSlices(), getStacks());
         glPopMatrix();
     });
@@ -121,17 +141,31 @@ void Voronoi::calculateDiagram(const Stippler& stippler) {
 // automatically makes a call to `calculateDiagram(stippler)`
 void Voronoi::redistributeStipples(Stippler& stippler) {
     calculateDiagram(stippler);
+    maxMovement = avgMovement = 0.0f;
+    maxMass = avgMass = 0.0f;
     stippler.resetVoronoi();
     for (unsigned i = 0; i < diagram.size(); i++) {
         int x = i % stippler.getWidth();
         int y = stippler.getHeight() - i / stippler.getWidth(); // subtract due to opengl (0,0) in bottom left
+        float tone = stippler.getImageTone(i);
         Stipple& stipple = stippler[diagram[i]];
-        stipple.setMass(stipple.getMass() + 1.0f);
-        stipple.setXMoment(stipple.getXMoment() + x);
-        stipple.setYMoment(stipple.getYMoment() + y);
+        stipple.setMass(stipple.getMass() + tone);
+        stipple.setXMoment(stipple.getXMoment() + x*tone);
+        stipple.setYMoment(stipple.getYMoment() + y*tone);
     }
     for (Stipple& stipple : stippler.getStipples()) {
-        stipple.setX(stipple.getXMoment() / stipple.getMass());
-        stipple.setY(stipple.getYMoment() / stipple.getMass());
+        if (stipple.getMass() > 0.001f) {
+            float x = stipple.getXMoment() / stipple.getMass();
+            float y = stipple.getYMoment() / stipple.getMass();
+            float movement = std::sqrt( std::pow(x - stipple.getX(), 2) + std::pow(y - stipple.getY(), 2) );
+            maxMovement = std::max(movement, maxMovement);
+            avgMovement += movement;
+            maxMass = std::max(stipple.getMass(), maxMass);
+            avgMass += stipple.getMass();
+            stipple.setX(x);
+            stipple.setY(y);
+        }
     }
+    avgMovement /= stippler.getNumStipples();
+    avgMass /= stippler.getNumStipples();
 }

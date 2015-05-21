@@ -1,7 +1,6 @@
 
 
 #pragma once
-
 #include <ppl.h>
 
 #include <map>
@@ -15,7 +14,6 @@
 #include "../util/Random.h"
 
 #include "../voronoi/Voronoi.h"
-class Voronoi;
 
 #include "FinalizeParams.h"
 
@@ -59,6 +57,7 @@ private:
     typedef std::pair<Point,Point> Edge;
 
     int width, height;
+    Voronoi voronoi;
     std::vector<Stipple> stipples;
 
     Image original, ntsc;

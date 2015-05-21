@@ -63,22 +63,22 @@ void Voronoi::setStacks(GLint stacks) {
 }
 
 // returns the furthest distance a stipple moved in the previous iteration
-float Voronoi::getMaxMovement() {
+float Voronoi::getMaxMovement() const {
     return maxMovement;
 }
 
 // returns the average distance a stipple moved in the previous iteration
-float Voronoi::getAvgMovement() {
+float Voronoi::getAvgMovement() const {
     return avgMovement;
 }
 
 // returns the largest mass of a stipple in the previous iteration
-float Voronoi::getMaxMass() {
+float Voronoi::getMaxMass() const {
     return maxMass;
 }
 
 // returns the average mass of a stipple in the previous iteration
-float Voronoi::getAvgMass() {
+float Voronoi::getAvgMass() const {
     return avgMass;
 }
 

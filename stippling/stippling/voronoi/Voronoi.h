@@ -4,7 +4,6 @@
 #include <array>
 #include <vector>
 
-#include "../stippler/Stippler.h"
 class Stippler;
 
 #include <GL/glut.h>
@@ -32,10 +31,10 @@ public:
     void setSlices(GLint slices);
     void setStacks(GLint stacks);
     
-    float getMaxMovement();
-    float getAvgMovement();
-    float getMaxMass();
-    float getAvgMass();
+    float getMaxMovement() const;
+    float getAvgMovement() const;
+    float getMaxMass() const;
+    float getAvgMass() const;
 
     const std::vector<int>& getDiagram() const;
 
@@ -49,3 +48,6 @@ private:
     float maxMovement, avgMovement;
     float maxMass, avgMass;
 };
+
+// moving include stippler here fixes undefined class bugs
+#include "../stippler/Stippler.h"

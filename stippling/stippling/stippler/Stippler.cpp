@@ -1,7 +1,6 @@
 
 
 #include "Stippler.h"
-static Voronoi voronoi;
 
 Stippler::Stippler() :
     width(0),

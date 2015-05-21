@@ -25,7 +25,7 @@ std::map<int, std::pair<float,float>> getMap(std::string tspFile) {
 }
 
 // displays the points and writes the points to the given svg file
-void writePoints(std::string solnFile, std::map<int, std::pair<float,float>> points, std::ofstream& out, int red, int green, int blue, int alpha = 255) {
+void writePoints(std::string solnFile, std::map<int, std::pair<float,float>> points, std::ofstream& out, int red, int green, int blue, int width = 1) {
     std::ifstream soln(solnFile);
     glColor3ub(red, green, blue);
     glBegin(GL_LINE_LOOP);
@@ -35,7 +35,7 @@ void writePoints(std::string solnFile, std::map<int, std::pair<float,float>> poi
         if (prev != -1) {
             out << "<line x1=\"" << std::to_string(points[prev].first) << "\" y1=\"" << std::to_string(points[prev].second) << "\""
                 << " x2=\"" << std::to_string(points[idx].first) << "\" y2=\"" << std::to_string(points[idx].second) << "\""
-                << " style=\"stroke:rgba(" << red << "," << green << "," << blue << "," << alpha << ");stroke-width:2\"/>" << std::endl;
+                << " style=\"stroke:rgb(" << red << "," << green << "," << blue << ");stroke-width:" << width << "\"/>" << std::endl;
         }
         prev = idx;
     }
@@ -62,6 +62,7 @@ void displayTSP() {
 
 // handles color tsp art, soln files are [cyan|magenta|yellow|black].cyc
 void displayColorTSP() {
+    std::cout << "displaying...";
     std::ofstream svg("../../tsp.svg");
     svg << "<?xml version=\"1.0\"?>" << std::endl
         << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">" << std::endl
@@ -70,15 +71,15 @@ void displayColorTSP() {
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLineWidth(1.5f);
-    writePoints("../../yellow.cyc", getMap("../../yellow.tsp"), svg, 255, 255, 0, 255);
-    writePoints("../../magenta.cyc", getMap("../../magenta.tsp"), svg, 255, 0, 255, 64);
-    writePoints("../../cyan.cyc", getMap("../../cyan.tsp"), svg, 0, 255, 255, 64);
-    writePoints("../../black.cyc", getMap("../../black.tsp"), svg, 0, 0, 0, 128);
+    writePoints("../../yellow.cyc", getMap("../../yellow.tsp"), svg, 255, 255, 0);
+    writePoints("../../magenta.cyc", getMap("../../magenta.tsp"), svg, 255, 0, 255);
+    writePoints("../../cyan.cyc", getMap("../../cyan.tsp"), svg, 0, 255, 255);
+    writePoints("../../black.cyc", getMap("../../black.tsp"), svg, 0, 0, 0);
     svg << "</svg>" << std::endl;
     svg.close();
     glEnd();
     glFlush();
-    std::cout << "displayed" << std::endl;
+    std::cout << "done!" << std::endl;
 }
 
 
@@ -100,7 +101,7 @@ void keyboardFunc(unsigned char key, int x, int y) {
         //break;
     case 's':
         stippler.finalize(params);
-        save(stippler, "output");
+        save(stippler, "output", 0.3f);
         break;
     }
 }
@@ -127,10 +128,10 @@ void keyboardColorFunc(unsigned char key, int x, int y) {
         magenta.finalize(params);
         yellow.finalize(params);
         black.finalize(params);
-        save(cyan, "cyan", 0.1f);
-        save(magenta, "magenta", 0.15f);
-        save(yellow, "yellow", 0.05f);
-        save(black, "black", 0.3f);
+        save(cyan, "cyan", 0.2f);
+        save(magenta, "magenta", 0.2f);
+        save(yellow, "yellow", 0.2f);
+        save(black, "black", 0.4f);
         break;
     }
 }
@@ -162,7 +163,7 @@ int main(int argc, char** argv) {
     //stippler = Stippler("../../images/earth.tiff", 25000);
     //stippler = Stippler("../../images/stripes.jpg", 10000);
     //stippler = Stippler("../../images/zoidberg.tiff", 25000);
-    //stippler = Stippler("../../images/toto.tiff", 15000);
+    //stippler = Stippler("../../images/toto.tiff", 7500);
     //stippler = Stippler("../../images/smiley.tiff", 35000);
     //stippler = Stippler("../../images/chaika01.jpg", 20000);
     //stippler = Stippler("../../images/chaika02.jpg", 35000);
@@ -172,29 +173,31 @@ int main(int argc, char** argv) {
     //stippler = Stippler("../../images/sleepy_pup.JPG", 18000);
     //stippler = Stippler("../../images/erin01.JPG", 35000);
     //stippler = Stippler("../../images/chaika03.JPG", 35000);
-    //stippler = Stippler("../../images/odyssey.jpg", 20000);
+    //stippler = Stippler("../../images/odyssey.jpg", 15000);
     //stippler = Stippler("../../images/moop.jpg", 50000);
     //stippler = Stippler("../../images/erin02.JPG", 50000);
     //stippler = Stippler("../../images/frog.JPG", 35000);
     //stippler = Stippler("../../images/chaika05.JPG", 35000);
-    //stippler = Stippler("../../images/horse2.JPG", 50000);
+    //stippler = Stippler("../../images/horse2.JPG", 20000);
     //stippler = Stippler("../../images/boats.JPG", 20000);
-    //stippler = Stippler("../../images/pacman.jpg", 3000);
-    stippler = Stippler("../../images/pengiun.jpg", 10000);
-    //stippler = Stippler("../../images/zebra.jpg", 20000);
-    //stippler = Stippler("../../images/moop02.JPG", 55000);
+    //stippler = Stippler("../../images/pacman.jpg", 2500);
+    //stippler = Stippler("../../images/pengiun.jpg", 10000);
+    stippler = Stippler("../../images/zebra.jpg", 10000);
+    //stippler = Stippler("../../images/moop02.JPG", 25000);
+    //stippler = Stippler("../../images/robin_williams.jpg", 15000);
+    //stippler = Stippler("../../images/starry_night.jpg", 20000);
 
     bool filter = false;
 
     bool outputTSP = true;
 
-    bool cmyk = true;
+    bool cmyk = false;
 
     params = FinalizeParams(
         FinalizeParams::RADIUS_FUNC_LINEAR,
         0.85f,
         FinalizeParams::RADIUS_MODE_MASS,
-        true
+        false
     );
 
     if (filter) {

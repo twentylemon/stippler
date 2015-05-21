@@ -57,6 +57,10 @@ public:
     void toGreenOnly();
     void toBlueOnly();
 
+    void toCyanOnly();
+    void toYellowOnly();
+    void toMagentaOnly();
+
     //filters
     void applyMaxFilter();
     void applyMinFilter();

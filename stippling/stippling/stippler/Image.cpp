@@ -94,8 +94,8 @@ void Image::save(std::string file) {
     }
     
     //if (!FreeImage_Save(FIF_TIFF, image, file.c_str()))
-    if (!FreeImage_Save(FreeImage_GetFileType(file.c_str()), image, file.c_str()))
-        perror("FreeImage_Save failed in Image::save()");
+    if (!FreeImage_Save(FreeImage_GetFIFFromFilename(file.c_str()), image, file.c_str()))
+        std::cerr << "FreeImage_Save failed in Image::save() " << std::to_string(FreeImage_GetFileType(file.c_str())) << std::endl;
     FreeImage_Unload(image);
     std::cerr << "done!" << std::endl;
 }
@@ -278,6 +278,36 @@ void Image::toBlueOnly() {
     std::cerr << "Displaying blue channel only...";
     std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
         return Pixel(0, 0, pixel.blue);
+    });
+    copyBuffer();
+    std::cerr << "done!" << std::endl;
+}
+
+// displays only the cyan channel of this image
+void Image::toCyanOnly() {
+    std::cerr << "Displaying cyan channel only...";
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
+        return Pixel((GLubyte)(255*pixel.red/255.0f), 255, 255);
+    });
+    copyBuffer();
+    std::cerr << "done!" << std::endl;
+}
+
+// displays only the magenta channel of this image
+void Image::toMagentaOnly() {
+    std::cerr << "Displaying magenta channel only...";
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
+        return Pixel(255, (GLubyte)(255*pixel.green/255.0f), 255);
+    });
+    copyBuffer();
+    std::cerr << "done!" << std::endl;
+}
+
+// displays only the yellow channel of this image
+void Image::toYellowOnly() {
+    std::cerr << "Displaying yellow channel only...";
+    std::transform(data.begin(), data.end(), buffer.begin(), [](const Pixel& pixel) {
+        return Pixel(255, 255, (GLubyte)(255*pixel.blue/255.0f));
     });
     copyBuffer();
     std::cerr << "done!" << std::endl;

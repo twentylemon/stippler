@@ -119,6 +119,24 @@ void Stippler::resetVoronoi() {
 }
 
 
+// returns the text for a tsp file using the stipples
+std::string Stippler::toTSP(float threshold) const {
+    std::string tsp = "NAME : stipples\n";
+    std::string nodes = "";
+    int size = 0;
+    for (int i = 0; i < getNumStipples(); i++) {
+        if (stipples[i].getMass() / voronoi.getMaxMass() > threshold) {
+            size++;
+            nodes += std::to_string(size) + " " + std::to_string(stipples[i].getX()) + " " + std::to_string((float)getHeight() - stipples[i].getY()) + "\n";
+        }
+    }
+    tsp += "DIMENSION : " + std::to_string(size) + "\n";
+    tsp += "EDGE_WEIGHT_TYPE : EUC_2D\n";
+    tsp += "NODE_COORD_SECTION\n";
+    return tsp + nodes + "EOF\n";
+}
+
+
 // performs one iteration of lloyds method on the stipples
 // calculates the voronoi diagram, moves stipples to centroids
 // returns the <avg,max> movement of the stipples as a pair

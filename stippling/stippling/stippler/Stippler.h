@@ -50,6 +50,8 @@ public:
     void initStipples(unsigned int numStipples);
     void finalize(const FinalizeParams& params);
 
+    std::string toTSP(float threshold = 0.15f) const;
+
     friend std::ostream& operator<<(std::ostream& out, const Stippler& stippler);
 
 private:
@@ -58,7 +60,6 @@ private:
 
     int width, height;
     std::vector<Stipple> stipples;
-    std::map<Point, std::vector<Edge>> edgeMap;
 
     Image original, ntsc;
 };

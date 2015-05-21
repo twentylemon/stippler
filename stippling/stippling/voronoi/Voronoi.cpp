@@ -8,8 +8,8 @@ const int VISIBILITY_FACTOR = 1;
 Voronoi::Voronoi() : 
     radius(200.0),
     height(25.0),
-    slices(40),
-    stacks(5)
+    slices(10),
+    stacks(3)
 {
 }
 
